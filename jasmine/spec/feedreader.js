@@ -54,19 +54,40 @@ $(function() {
 
     /* TODO: Write a new test suite named "The menu" */
 
+    describe ('The menu', function(){
+        var body;
+        //beforeEach function allows us to instantiate the body object fresh at the start of 
+        //each test. The beforeEach function is not actually saving resources just simplifying the code
+        beforeEach(function() {
+            body = $('body');
+        });
+
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
+         it('should be hidden by default', function() {
+            expect(body.hasClass('menu-hidden')).toBe(true);
+         });
 
          /* TODO: Write a test that ensures the menu changes
           * visibility when the menu icon is clicked. This test
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
+        it('should toggle appear/disapear when clicked', function() {
+            var menuIcon = $('.menu-icon-link'); //clicking this for our test
+            menuIcon.trigger('click');
+            expect(body.hasClass('menu-hidden')).toBe(false); //should not longer be hidden after click
+            menuIcon.trigger('click');
+            expect(body.hasClass('menu-hidden')).toBe(true); //should return to hidden after second click
+          });
+    })
 
     /* TODO: Write a new test suite named "Initial Entries" */
+    
+    describe ('Initial Entries', function() {
 
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
@@ -74,6 +95,17 @@ $(function() {
          * Remember, loadFeed() is asynchronous so this test wil require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+         beforeEach(function(done) {
+            loadFeed(0, function() { //load the feed before the test for feed length
+                done(); //done function signals framework that async function has completed
+            });
+         });
+
+         it('should have at least one feed element after load', function(done) {
+            expect($('.feed .entry').length).toBe(true); //having any length means not empty
+            done(); //done function signals framework that async function has completed
+         });
+    })
 
     /* TODO: Write a new test suite named "New Feed Selection"
 
