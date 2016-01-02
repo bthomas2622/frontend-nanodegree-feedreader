@@ -56,7 +56,7 @@ $(function() {
 
     describe ('The menu', function(){
         var body;
-        //beforeEach function allows us to instantiate the body object fresh at the start of 
+        //this beforeEach function allows us to instantiate the body object fresh at the start of 
         //each test. The beforeEach function is not actually saving resources just simplifying the code
         beforeEach(function() {
             body = $('body');
@@ -102,15 +102,34 @@ $(function() {
          });
 
          it('should have at least one feed element after load', function(done) {
-            expect($('.feed .entry').length).toBe(true); //having any length means not empty
+            expect($('.feed .entry').length).not.toBe(0); //length>0 means at least 1 entry
             done(); //done function signals framework that async function has completed
          });
-    })
+    });
 
-    /* TODO: Write a new test suite named "New Feed Selection"
+    // TODO: Write a new test suite named "New Feed Selection"
 
+    describe('New Feed Selection', function() {
+        var initialFeed;
+    
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+        //this beforeeach function is used to grab initial feed content to compare to new feed
+        beforeEach(function(done) {
+            loadFeed(0, function() { 
+                initialFeed = $('.feed').html();
+                done();
+            });
+        });
+
+         it('should change content after new feed load', function(done) {
+            loadFeed(1, function() { //1 input is call to new feed
+                var newFeed = $('.feed').html();
+                expect(initialFeed).not.toEqual(newFeed); //new feed should reflect content changes, aka have differences
+                done();
+            });        
+         });
+    });    
 }());
