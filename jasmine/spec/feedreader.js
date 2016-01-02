@@ -125,7 +125,7 @@ $(function() {
         });
 
          it('should change content after new feed load', function(done) {
-            loadFeed(1, function() { //1 input is call to new feed
+            loadFeed(2, function() { //1, 2, 3 id's all represent different feeds in allFeeds
                 var newFeed = $('.feed').html();
                 expect(initialFeed).not.toEqual(newFeed); //new feed should reflect content changes, aka have differences
                 done();
